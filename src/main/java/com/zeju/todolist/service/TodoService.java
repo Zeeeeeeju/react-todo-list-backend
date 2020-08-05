@@ -21,7 +21,11 @@ public class TodoService {
     }
 
     public Todo updateTodo(Todo todo){
-        return null;
+        Todo returnedTodo = todoRepository.findTodoById(todo.getId());
+        if(returnedTodo == null){
+            return null;
+        }
+        return todoRepository.save(returnedTodo);
     }
 
 }

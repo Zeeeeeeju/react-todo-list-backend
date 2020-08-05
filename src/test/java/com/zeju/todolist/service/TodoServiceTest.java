@@ -40,13 +40,12 @@ public class TodoServiceTest {
         Todo todo = new Todo(1, "todo1", false);
         Todo updatedTodo = new Todo(1,"todo1",true);
         given(todoRepository.findTodoById(todo.getId())).willReturn(todo);
-        given(todoRepository.save(updatedTodo)).willReturn(todo);
+        given(todoRepository.save(todo)).willReturn(updatedTodo);
 
         //when
         Todo returnedTodo = todoService.updateTodo(todo);
 
         //then
         assertNotNull(returnedTodo);
-
     }
 }
