@@ -17,8 +17,7 @@ import static org.mockito.BDDMockito.given;
 public class TodoServiceTest {
 
     private final TodoRepository todoRepository = Mockito.mock(TodoRepository.class);
-
-    private TodoService todoService = new TodoService();
+    private TodoService todoService = new TodoService(todoRepository);
 
     @Test
     void should_return_todos_when_get_all_given_none() {
@@ -34,4 +33,5 @@ public class TodoServiceTest {
         assertNotNull(returnedTodos);
         assertEquals(returnedTodos.size(), fetchedTodos.size());
     }
+
 }
