@@ -6,35 +6,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
 
     private TodoRepository todoRepository;
 
-    public TodoService(TodoRepository todoRepository){
+    public TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
 
-    public List<Todo> getAll(){
-        return todoRepository.getAll();
+    public List<Todo> getAll() {
+        return todoRepository.findAll();
     }
 
-    public Todo updateTodo(Todo todo){
-        Todo returnedTodo = todoRepository.findTodoById(todo.getId());
-        if(returnedTodo == null){
+    public Todo updateTodo(Todo todo, Integer id) {
+        Optional<Todo> returnedTodo = todoRepository.findById(id);
+        if (!returnedTodo.isPresent() || todo.getId() != id) {
+            System.out.println("123");
             return null;
         }
-        return todoRepository.save(returnedTodo);
+        return todoRepository.save(todo);
     }
 
-    public Todo deleteTodo(Todo todo) {
-        Todo returnedTodo = todoRepository.findTodoById(todo.getId());
-        if(returnedTodo == null){
+    public Todo deleteTodo(Integer id) {
+        Optional<Todo> returnedTodo = todoRepository.findById(id);
+        if (!returnedTodo.isPresent()) {
             return null;
         }
-        todoRepository.deleteById(returnedTodo.getId());
-        return returnedTodo;
+        todoRepository.deleteById(returnedTodo.get().getId());
+        return returnedTodo.get();
     }
 
     public Todo addTodo(Todo todo) {

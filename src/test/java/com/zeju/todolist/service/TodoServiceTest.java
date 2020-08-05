@@ -5,10 +5,10 @@ import com.zeju.todolist.model.Todo;
 import com.zeju.todolist.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,7 +24,7 @@ public class TodoServiceTest {
         //given
         List<Todo> fetchedTodos = new ArrayList<>();
         fetchedTodos.add(new Todo(1, "todo1", false));
-        given(todoRepository.getAll()).willReturn(fetchedTodos);
+        given(todoRepository.findAll()).willReturn(fetchedTodos);
 
         //when
         List<Todo> returnedTodos = todoService.getAll();
@@ -35,15 +35,17 @@ public class TodoServiceTest {
     }
 
     @Test
-    void should_return_updated_todo_when_update_todo_given_todo() {
+    void should_return_updated_todo_when_update_todo_given_todo_and_id() {
         //given
-        Todo todo = new Todo(1, "todo1", false);
-        Todo updatedTodo = new Todo(1, "todo1", true);
-        given(todoRepository.findTodoById(todo.getId())).willReturn(todo);
-        given(todoRepository.save(todo)).willReturn(updatedTodo);
+        Integer id = 1;
+        Optional<Todo> todo = Optional.of(new Todo(1, "todo1", true));
+        Todo updateTodo = new Todo(1, "todo1", false);
+
+        given(todoRepository.findById(id)).willReturn(todo);
+        given(todoRepository.save(updateTodo)).willReturn(updateTodo);
 
         //when
-        Todo returnedTodo = todoService.updateTodo(todo);
+        Todo returnedTodo = todoService.updateTodo(updateTodo,id);
 
         //then
         assertNotNull(returnedTodo);
@@ -53,12 +55,12 @@ public class TodoServiceTest {
     void should_return_todo_when_delete_todo_given_todo_id() {
         //given
         Integer id = 1;
-        Todo todo = new Todo(1, "todo1", false);
-        given(todoRepository.findTodoById(id)).willReturn(todo);
-        given(todoRepository.deleteById(todo.getId())).willReturn(todo);
+        Optional<Todo> todo = Optional.of(new Todo(1, "todo1", false));
+        given(todoRepository.findById(id)).willReturn(todo);
+        todoRepository.deleteById(todo.get().getId());
 
         //when
-        Todo deletedTodo = todoService.deleteTodo(todo);
+        Todo deletedTodo = todoService.deleteTodo(id);
 
         //then
         assertNotNull(deletedTodo);
