@@ -20,4 +20,8 @@ public class TodoService {
         return todoRepository.getAll();
     }
 
+    public Todo updateTodo(Todo todo){
+        return null;
+    }
+
 }

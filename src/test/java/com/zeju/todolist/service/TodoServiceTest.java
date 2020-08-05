@@ -34,4 +34,19 @@ public class TodoServiceTest {
         assertEquals(returnedTodos.size(), fetchedTodos.size());
     }
 
+    @Test
+    void should_return_updated_todo_when_update_todo_given_todo() {
+        //given
+        Todo todo = new Todo(1, "todo1", false);
+        Todo updatedTodo = new Todo(1,"todo1",true);
+        given(todoRepository.findTodoById(todo.getId())).willReturn(todo);
+        given(todoRepository.save(updatedTodo)).willReturn(todo);
+
+        //when
+        Todo returnedTodo = todoService.updateTodo(todo);
+
+        //then
+        assertNotNull(returnedTodo);
+
+    }
 }
