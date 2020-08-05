@@ -29,6 +29,12 @@ public class TodoService {
     }
 
     public Todo deleteTodo(Todo todo) {
-        return null;
+        Todo returnedTodo = todoRepository.findTodoById(todo.getId());
+        if(returnedTodo == null){
+            return null;
+        }
+        todoRepository.deleteById(returnedTodo.getId());
+        return returnedTodo;
     }
+
 }
