@@ -64,4 +64,17 @@ public class TodoServiceTest {
         assertNotNull(deletedTodo);
         assertEquals(id, deletedTodo.getId());
     }
+
+    @Test
+    void should_return_todo_when_add_todo_given_todo() {
+        //given
+        Todo todo = new Todo(null, "todo1", false);
+        given(todoRepository.save(todo)).willReturn(new Todo(1, "todo1", false));
+
+        //when
+        Todo addedTodo = todoService.addTodo(todo);
+
+        //then
+        assertNotNull(addedTodo);
+    }
 }
