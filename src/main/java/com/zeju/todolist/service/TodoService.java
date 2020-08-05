@@ -28,4 +28,7 @@ public class TodoService {
         return todoRepository.save(returnedTodo);
     }
 
+    public Todo deleteTodo(Todo todo) {
+        return null;
+    }
 }

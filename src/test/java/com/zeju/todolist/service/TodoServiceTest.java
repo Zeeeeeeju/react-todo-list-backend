@@ -38,7 +38,7 @@ public class TodoServiceTest {
     void should_return_updated_todo_when_update_todo_given_todo() {
         //given
         Todo todo = new Todo(1, "todo1", false);
-        Todo updatedTodo = new Todo(1,"todo1",true);
+        Todo updatedTodo = new Todo(1, "todo1", true);
         given(todoRepository.findTodoById(todo.getId())).willReturn(todo);
         given(todoRepository.save(todo)).willReturn(updatedTodo);
 
@@ -47,5 +47,21 @@ public class TodoServiceTest {
 
         //then
         assertNotNull(returnedTodo);
+    }
+
+    @Test
+    void should_return_todo_when_delete_todo_given_todo_id() {
+        //given
+        Integer id = 1;
+        Todo todo = new Todo(1, "todo1", false);
+        given(todoRepository.findTodoById(id)).willReturn(todo);
+        given(todoRepository.deleteById(todo.getId())).willReturn(todo);
+
+        //when
+        Todo deletedTodo = todoService.deleteTodo(todo);
+
+        //then
+        assertNotNull(deletedTodo);
+        assertEquals(id, deletedTodo.getId());
     }
 }

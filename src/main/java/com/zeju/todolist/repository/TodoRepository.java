@@ -12,4 +12,6 @@ public interface TodoRepository {
     Todo save(Todo todo);
 
     Todo findTodoById(Integer id);
+
+    Todo deleteById(Integer id);
 }
