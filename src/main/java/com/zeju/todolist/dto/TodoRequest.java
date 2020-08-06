@@ -8,5 +8,6 @@ import java.io.Serializable;
 public class TodoRequest implements Serializable {
 
     private String content;
+    private Boolean status = false;
 
 }
