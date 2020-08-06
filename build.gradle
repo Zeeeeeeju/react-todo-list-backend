@@ -31,11 +31,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.1.RELEASE'
     implementation 'com.alibaba:fastjson:1.2.28'
     testCompile "org.mockito:mockito-core:3.4.0"
+    compile "org.projectlombok:lombok:1.16.16"
+    annotationProcessor "org.projectlombok:lombok:1.16.16"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-    compileOnly 'org.projectlombok:lombok'
     runtime group: 'com.h2database', name: 'h2', version: '1.4.200'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
