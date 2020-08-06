@@ -1,5 +1,6 @@
 package com.zeju.todolist.service;
 
+import com.zeju.todolist.exception.IllegalOperationException;
 import com.zeju.todolist.model.Todo;
 import com.zeju.todolist.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,11 @@ public class TodoService {
 
     public Todo updateTodo(Todo todo, Integer id) {
         Optional<Todo> returnedTodo = todoRepository.findById(id);
-        if (!returnedTodo.isPresent() || todo.getId() != id) {
-            System.out.println("123");
+        if (!returnedTodo.isPresent()) {
             return null;
         }
+        if(todo.getId()!=id)
+            throw new IllegalOperationException();
         return todoRepository.save(todo);
     }
 

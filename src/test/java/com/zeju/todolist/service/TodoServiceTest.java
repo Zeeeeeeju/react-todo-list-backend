@@ -88,7 +88,6 @@ public class TodoServiceTest {
         Todo updateTodo = new Todo(2, "todo1", false);
 
         given(todoRepository.findById(todo_id)).willReturn(todo);
-        given(todoRepository.save(updateTodo)).willReturn(updateTodo);
 
         //when
         Throwable throwable = assertThrows(IllegalOperationException.class, () -> todoService.updateTodo(updateTodo, todo_id));
