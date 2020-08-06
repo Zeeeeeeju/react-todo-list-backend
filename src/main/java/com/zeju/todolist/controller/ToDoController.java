@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
+@CrossOrigin
 public class ToDoController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class ToDoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoResponse updateTodo(@RequestBody TodoRequest todo) {
+    public TodoResponse addTodo(@RequestBody TodoRequest todo) {
         return todoMapper.convertEntityToTodoResponse(todoService.addTodo(todoMapper.convertTodoRequestToEntity(todo)));
     }
 
