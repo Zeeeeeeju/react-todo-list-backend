@@ -2,6 +2,7 @@ package com.zeju.todolist.integration;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zeju.todolist.dto.TodoRequest;
+import com.zeju.todolist.model.Todo;
 import com.zeju.todolist.repository.TodoRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +33,7 @@ public class TodoIntegrationTest {
     }
 
     @Test
-    void should_return_todoResponse_when_add_todo_given_todoRequest() throws Exception {
+    void should_return_added_todo_when_add_todo_given_todo() throws Exception {
         //given
         TodoRequest todoRequest = new TodoRequest("abc",false);
 
@@ -43,5 +45,20 @@ public class TodoIntegrationTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.content").value(todoRequest.getContent()))
                 .andExpect(jsonPath("$.status").value(todoRequest.getStatus()));
+    }
+
+    @Test
+    void should_return_deleted_todo_when_delete_todo_given_todo_id() throws Exception {
+        //given
+        Todo todo = new Todo(null,"abc",false);
+        Todo addedTodo = todoRepository.save(todo);
+
+        //when
+        mockMvc.perform(delete("/todos/"+addedTodo.getId()))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.content").value(addedTodo.getContent()))
+                .andExpect(jsonPath("$.status").value(addedTodo.getStatus()));
+
     }
 }
