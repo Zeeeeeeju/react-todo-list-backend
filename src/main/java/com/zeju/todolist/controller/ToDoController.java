@@ -33,14 +33,14 @@ public class ToDoController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Todo deleteTodo(@PathVariable Integer id) {
-        return todoService.deleteTodo(id);
+    public TodoResponse deleteTodo(@PathVariable Integer id) {
+        return todoMapper.convertEntityToTodoResponse(todoService.deleteTodo(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Todo updateTodo(@RequestBody Todo todo) {
-        return todoService.addTodo(todo);
+    public TodoResponse updateTodo(@RequestBody TodoRequest todo) {
+        return todoMapper.convertEntityToTodoResponse(todoService.addTodo(todoMapper.convertTodoRequestToEntity(todo)));
     }
 
 }
