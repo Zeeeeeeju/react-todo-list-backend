@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,6 +77,21 @@ public class TodoIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.status").value(updateTodo.getStatus()));
+
+    }
+
+    @Test
+    void should_return_todos_when_get_all_todo_given_none() throws Exception {
+        //given
+        Todo todo = new Todo(null,"abc",false);
+        Todo todo1 = new Todo(null,"vvvv",false);
+        Todo todo2 = new Todo(null,"aaaaaaaaaaa",false);
+        todoRepository.saveAll(Arrays.asList(todo,todo1,todo2));
+
+        //when
+        mockMvc.perform(get("/todos/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3));
 
     }
 }
