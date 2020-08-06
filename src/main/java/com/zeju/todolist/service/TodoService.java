@@ -36,7 +36,7 @@ public class TodoService {
     public Todo deleteTodo(Integer id) {
         Optional<Todo> returnedTodo = todoRepository.findById(id);
         if (!returnedTodo.isPresent()) {
-            return null;
+            throw new NoSuchDataException();
         }
         todoRepository.deleteById(returnedTodo.get().getId());
         return returnedTodo.get();
