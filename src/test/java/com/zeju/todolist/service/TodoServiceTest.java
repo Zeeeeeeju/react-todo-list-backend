@@ -112,4 +112,19 @@ public class TodoServiceTest {
         //then
         assertEquals(NoSuchDataException.class, throwable.getClass());
     }
+
+    @Test
+    void should_throw_NoSuchDataException_when_delete_todo_given_wrong_todo_id() {
+        //given
+        Integer todo_id = 99;
+        Optional<Todo> todo = Optional.ofNullable(null);
+
+        given(todoRepository.findById(todo_id)).willReturn(todo);
+
+        //when
+        Throwable throwable = assertThrows(NoSuchDataException.class, () -> todoService.deleteTodo(todo_id));
+
+        //then
+        assertEquals(NoSuchDataException.class, throwable.getClass());
+    }
 }
