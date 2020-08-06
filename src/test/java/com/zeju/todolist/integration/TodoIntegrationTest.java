@@ -66,15 +66,14 @@ public class TodoIntegrationTest {
     @Test
     void should_return_updated_todo_when_update_todo_given_todo_and_id() throws Exception {
         //given
-        Integer id = 1;
         Todo todo = new Todo(null,"abc",false);
-        todoRepository.save(todo);
-        Todo updateTodo = new Todo(id,"abc",true);
+        Todo addedTodo = todoRepository.save(todo);
+        Integer id = addedTodo.getId();
+        Todo updateTodo = new Todo(addedTodo.getId(),"abc",true);
         String todoJson = JSONObject.toJSONString(updateTodo);
 
         //when
         mockMvc.perform(put("/todos/"+id).contentType(MediaType.APPLICATION_JSON).content(todoJson))
-                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.status").value(updateTodo.getStatus()));
 

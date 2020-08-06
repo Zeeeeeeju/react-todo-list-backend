@@ -27,6 +27,7 @@ public class ToDoController {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public TodoResponse updateTodo(@RequestBody TodoRequest todo, @PathVariable Integer id) {
         return todoMapper.convertEntityToTodoResponse(todoService.updateTodo(todoMapper.convertTodoRequestToEntity(todo), id));
     }
