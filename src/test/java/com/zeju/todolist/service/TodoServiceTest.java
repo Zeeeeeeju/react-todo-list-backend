@@ -1,6 +1,7 @@
 package com.zeju.todolist.service;
 
 
+import com.zeju.todolist.exception.IllegalOperationException;
 import com.zeju.todolist.model.Todo;
 import com.zeju.todolist.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 public class TodoServiceTest {
@@ -45,7 +45,7 @@ public class TodoServiceTest {
         given(todoRepository.save(updateTodo)).willReturn(updateTodo);
 
         //when
-        Todo returnedTodo = todoService.updateTodo(updateTodo,id);
+        Todo returnedTodo = todoService.updateTodo(updateTodo, id);
 
         //then
         assertNotNull(returnedTodo);
@@ -78,5 +78,22 @@ public class TodoServiceTest {
 
         //then
         assertNotNull(addedTodo);
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_update_todo_given_wrong_todo_and_todo_id() {
+        //given
+        Integer todo_id = 1;
+        Optional<Todo> todo = Optional.of(new Todo(1, "todo1", true));
+        Todo updateTodo = new Todo(2, "todo1", false);
+
+        given(todoRepository.findById(todo_id)).willReturn(todo);
+        given(todoRepository.save(updateTodo)).willReturn(updateTodo);
+
+        //when
+        Throwable throwable = assertThrows(IllegalOperationException.class, () -> todoService.updateTodo(updateTodo, todo_id));
+
+        //then
+        assertEquals(IllegalOperationException.class, throwable.getClass());
     }
 }
