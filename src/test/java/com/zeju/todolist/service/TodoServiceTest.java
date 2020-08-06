@@ -2,6 +2,7 @@ package com.zeju.todolist.service;
 
 
 import com.zeju.todolist.exception.IllegalOperationException;
+import com.zeju.todolist.exception.NoSuchDataException;
 import com.zeju.todolist.model.Todo;
 import com.zeju.todolist.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
@@ -94,5 +95,21 @@ public class TodoServiceTest {
 
         //then
         assertEquals(IllegalOperationException.class, throwable.getClass());
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_update_todo_given_wrong_todo_id() {
+        //given
+        Integer todo_id = 99;
+        Optional<Todo> todo = Optional.ofNullable(null);
+        Todo updateTodo = new Todo(2, "todo1", false);
+
+        given(todoRepository.findById(todo_id)).willReturn(todo);
+
+        //when
+        Throwable throwable = assertThrows(NoSuchDataException.class, () -> todoService.updateTodo(updateTodo, todo_id));
+
+        //then
+        assertEquals(NoSuchDataException.class, throwable.getClass());
     }
 }
