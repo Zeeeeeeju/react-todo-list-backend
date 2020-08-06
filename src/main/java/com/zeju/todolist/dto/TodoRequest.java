@@ -11,6 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TodoRequest implements Serializable {
 
+    private Integer id;
     private String content;
     private Boolean status = false;
 

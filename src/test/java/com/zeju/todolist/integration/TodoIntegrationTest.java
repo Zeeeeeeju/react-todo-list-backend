@@ -12,8 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,7 +34,7 @@ public class TodoIntegrationTest {
     @Test
     void should_return_added_todo_when_add_todo_given_todo() throws Exception {
         //given
-        TodoRequest todoRequest = new TodoRequest("abc",false);
+        TodoRequest todoRequest = new TodoRequest(null,"abc",false);
 
         //when
         String todoJson = JSONObject.toJSONString(todoRequest);
@@ -59,6 +58,23 @@ public class TodoIntegrationTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.content").value(addedTodo.getContent()))
                 .andExpect(jsonPath("$.status").value(addedTodo.getStatus()));
+
+    }
+
+    @Test
+    void should_return_updated_todo_when_update_todo_given_todo_and_id() throws Exception {
+        //given
+        Integer id = 1;
+        Todo todo = new Todo(null,"abc",false);
+        todoRepository.save(todo);
+        Todo updateTodo = new Todo(id,"abc",true);
+        String todoJson = JSONObject.toJSONString(updateTodo);
+
+        //when
+        mockMvc.perform(put("/todos/"+id).contentType(MediaType.APPLICATION_JSON).content(todoJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.status").value(updateTodo.getStatus()));
 
     }
 }
