@@ -7,8 +7,11 @@ import com.zeju.todolist.model.Todo;
 import com.zeju.todolist.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,7 +44,7 @@ public class ToDoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoResponse addTodo(@RequestBody TodoRequest todo) {
+    public TodoResponse addTodo(@RequestBody @Valid TodoRequest todo) {
         return todoMapper.convertEntityToTodoResponse(todoService.addTodo(todoMapper.convertTodoRequestToEntity(todo)));
     }
 

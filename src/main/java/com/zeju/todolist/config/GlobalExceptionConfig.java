@@ -3,10 +3,13 @@ package com.zeju.todolist.config;
 import com.zeju.todolist.exception.IllegalOperationException;
 import com.zeju.todolist.exception.NoSuchDataException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionConfig {
@@ -26,6 +29,12 @@ public class GlobalExceptionConfig {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String illegalOperationExceptionHandler() {
         return ILLEGAL_OPERATION;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public String handleValidException(MethodArgumentNotValidException e){
+        return Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
     }
 
 }
