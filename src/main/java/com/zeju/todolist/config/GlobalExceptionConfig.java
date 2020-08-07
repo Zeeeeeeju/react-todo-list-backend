@@ -33,6 +33,7 @@ public class GlobalExceptionConfig {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleValidException(MethodArgumentNotValidException e){
         return Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
     }
