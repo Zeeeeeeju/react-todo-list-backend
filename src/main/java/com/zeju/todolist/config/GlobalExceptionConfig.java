@@ -19,7 +19,7 @@ public class GlobalExceptionConfig {
 
     @ExceptionHandler(NoSuchDataException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public String noSuchDataExceptionHandler() {
         return CAN_NOT_FIND_DATA;
     }
